@@ -12,12 +12,42 @@ public class QuadraticPrimeDriver {
 	public static void main(String[] args) {
 
 		// generate a prime number array with maximum value 1000
-		PrimeNumberArray primeArray = new PrimeNumberArray(1000);
+		PrimeNumberArray primesTable = new PrimeNumberArray(1000000);
+		PrimeNumberArray bArray = new PrimeNumberArray(1000);
 		
-		int[] primes = primeArray.getPrimeArray();
+		int[] primes = primesTable.getPrimeArray();
+		int[] b = bArray.getPrimeArray();
 		
-		for(int i = 0; i < primes.length; i++)
-			System.out.println(primes[i]);
+		QuadraticPrimeExpression qpe = new QuadraticPrimeExpression(0, 0, primes);
+		
+		int nmax = 0;
+		int amax = 0;
+		int bmax = 0;
+		
+		for (int i = 0; i < b.length; i++) {
+			for (int a = -1000; a<=1000; a++) {
+				qpe.setA(a);
+				qpe.setB(b[i]);
+				qpe.determinePrimesList();
+				if(qpe.getnMax() > nmax) {
+					nmax = qpe.getnMax();
+					amax = a;
+					bmax = b[i];
+				}
+				qpe.setB(-b[i]);
+				qpe.determinePrimesList();
+				if(qpe.getnMax() > nmax) {
+					nmax = qpe.getnMax();
+					amax = a;
+					bmax = -b[i];
+				}
+			}
+		}
+		
+		QuadraticPrimeExpression mostPrimes = new QuadraticPrimeExpression(amax, bmax, primes);
+		
+		System.out.println(mostPrimes);
+
 	}
 
 }
